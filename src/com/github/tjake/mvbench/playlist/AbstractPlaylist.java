@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicLong;
 
-import com.google.common.util.concurrent.MoreExecutors;
 
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.Timer;
@@ -29,8 +29,7 @@ public abstract class AbstractPlaylist
 
 
     public static AtomicLong tracker = new AtomicLong(0);
-    protected static ExecutorService executor = MoreExecutors.sameThreadExecutor();
-
+    protected static ExecutorService executor = Executors.newFixedThreadPool(16);
 
     public final List<Song> songList;
     public final String userName;
@@ -67,19 +66,32 @@ public abstract class AbstractPlaylist
         this.type = type;
     }
 
-    public ResultSetFuture write(Session session)
+    public ResultSetFuture write(final Session session)
     {
-        switch (type)
+
+        executor.submit(new Runnable()
         {
-            case ADD:
-                return add(session);
-            case UPDATE:
-                return update(session);
-            case DELETE:
-                return delete(session);
-            default:
-                throw new IllegalStateException();
-        }
+            @Override
+            public void run()
+            {
+                switch (type)
+                {
+                    case ADD:
+                        add(session);
+                        break;
+                    case UPDATE:
+                        update(session);
+                        break;
+                    case DELETE:
+                        delete(session);
+                        break;
+                    default:
+                        throw new IllegalStateException();
+                }
+            }
+        });
+
+        return null;
     }
 
 

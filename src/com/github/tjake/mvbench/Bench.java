@@ -5,6 +5,7 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
+import com.google.common.util.concurrent.RateLimiter;
 import com.google.common.util.concurrent.Uninterruptibles;
 
 import com.codahale.metrics.ConsoleReporter;
@@ -58,6 +59,11 @@ public class Bench
     @Option(name = {"--endpoint"}, description = "the cassandra endpoint")
     public String cassandraEndpoint = "127.0.0.1";
 
+    @Option(name = {"--maxinflight"}, description = "max requests in flight at a time")
+    public int maxInFlight = 1000;
+
+    @Option(name = {"--maxplaylistspersec"}, description = "generate max playlists per sec")
+    public int maxPlaylistsPerSec = 5000;
 
     void run()
     {
@@ -79,10 +85,18 @@ public class Bench
 
         Session session = cluster.connect(isManual ? "manual" : "mview");
 
+        RateLimiter limiter = RateLimiter.create(maxPlaylistsPerSec);
+
         System.out.println("Writing for "+numberIterations+ " iterations to " + (isManual ? "manual" : "materialied view") + " schema.");
 
         for (int i = 0; i < numberIterations; i++)
         {
+
+            while (AbstractPlaylist.tracker.get() > maxInFlight)
+                Uninterruptibles.sleepUninterruptibly(1, TimeUnit.MILLISECONDS);
+
+            limiter.acquire();
+
             factory.next().write(session);
 
             if (i % 10000 == 0)

@@ -15,9 +15,9 @@ import com.datastax.driver.core.*;
 public class MaterializedViewPlaylist extends AbstractPlaylist
 {
 
-    static PreparedStatement addStatement = null;
-    static PreparedStatement updateStatement = null;
-    static PreparedStatement deleteStatement = null;
+    volatile static PreparedStatement addStatement = null;
+    volatile static PreparedStatement updateStatement = null;
+    volatile static PreparedStatement deleteStatement = null;
 
     protected MaterializedViewPlaylist(String userName, String playlistName, List<Song> songList, Type type)
     {

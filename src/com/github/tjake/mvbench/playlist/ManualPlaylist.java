@@ -13,23 +13,22 @@ import com.datastax.driver.core.*;
  */
 public class ManualPlaylist extends AbstractPlaylist
 {
-    static PreparedStatement addplaylist = null;
-    static PreparedStatement addsong2user = null;
-    static PreparedStatement addartist2user = null;
-    static PreparedStatement addgenre2user = null;
-    static PreparedStatement addrecentlyplayed = null;
+    volatile static PreparedStatement addplaylist = null;
+    volatile static PreparedStatement addsong2user = null;
+    volatile static PreparedStatement addartist2user = null;
+    volatile static PreparedStatement addgenre2user = null;
+    volatile static PreparedStatement addrecentlyplayed = null;
 
-    static PreparedStatement updatelastplayed = null;
+    volatile static PreparedStatement updatelastplayed = null;
 
-    static PreparedStatement getplaylist = null;
-    static PreparedStatement getlastplated = null;
+    volatile static PreparedStatement getplaylist = null;
+    volatile static PreparedStatement getlastplated = null;
 
-    static PreparedStatement deleterecentlyplayed = null;
-    static PreparedStatement deleteplaylist = null;
-    static PreparedStatement deletesong2user = null;
-    static PreparedStatement deleteartist2user = null;
-    static PreparedStatement deletegenre2user = null;
-
+    volatile static PreparedStatement deleterecentlyplayed = null;
+    volatile static PreparedStatement deleteplaylist = null;
+    volatile static PreparedStatement deletesong2user = null;
+    volatile static PreparedStatement deleteartist2user = null;
+    volatile static PreparedStatement deletegenre2user = null;
 
     protected ManualPlaylist(String userName, String playlistName, List<Song> songList, Type type)
     {

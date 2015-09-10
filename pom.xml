@@ -43,7 +43,7 @@
     <dependency>
       <groupId>com.datastax.cassandra</groupId>
       <artifactId>cassandra-driver-core</artifactId>
-      <version>3.0.0-alpha1</version>
+      <version>3.0.0-alpha2</version>
     </dependency>
     <dependency>
       <groupId>io.airlift</groupId>

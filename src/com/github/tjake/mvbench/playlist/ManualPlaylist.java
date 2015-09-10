@@ -243,8 +243,11 @@ public class ManualPlaylist extends AbstractPlaylist
                     batchDelete.add(deleteartist2user.bind(row.getString("artist_name"), userName, playlistName, songId));
                     batchDelete.add(deletegenre2user.bind(row.getString("genre"), userName, playlistName, songId));
 
-                    long last_played = row.getLong("last_played");
-                    batchDelete.add(deleterecentlyplayed.bind(last_played, userName, playlistName, songId));
+                    if (!row.isNull("last_played"))
+                    {
+                        long last_played = row.getLong("last_played");
+                        batchDelete.add(deleterecentlyplayed.bind(last_played, userName, playlistName, songId));
+                    }
                 }
 
 

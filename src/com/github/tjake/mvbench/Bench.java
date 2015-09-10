@@ -1,6 +1,7 @@
 package com.github.tjake.mvbench;
 
 import java.io.File;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
@@ -10,6 +11,8 @@ import com.google.common.util.concurrent.Uninterruptibles;
 
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.CsvReporter;
+import com.codahale.metrics.Snapshot;
+import com.codahale.metrics.Timer;
 import com.datastax.driver.core.*;
 import com.github.tjake.mvbench.playlist.AbstractPlaylist;
 import io.airlift.airline.Command;

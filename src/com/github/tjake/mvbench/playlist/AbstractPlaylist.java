@@ -12,6 +12,7 @@ import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.Timer;
 import com.datastax.driver.core.ResultSetFuture;
 import com.datastax.driver.core.Session;
+import org.mpierce.metrics.reservoir.hdrhistogram.HdrHistogramReservoir;
 
 /**
  * Created by jake on 8/14/15.
@@ -20,12 +21,12 @@ public abstract class AbstractPlaylist
 {
     public static final MetricRegistry registry = new MetricRegistry();
 
-    public static Timer totalTimer = registry.register("total", new Timer());
-    public static Timer readTimer = registry.register("read", new Timer());
-    public static Timer addTimer = registry.register("add", new Timer());
-    public static Timer updateTimer = registry.register("update", new Timer());
-    public static Timer deleteTimer = registry.register("delete", new Timer());
-    public static Timer errorTimer = registry.register("error", new Timer());
+    public static Timer totalTimer = registry.register("total", new Timer(new HdrHistogramReservoir()));
+    public static Timer readTimer = registry.register("read", new Timer(new HdrHistogramReservoir()));
+    public static Timer addTimer = registry.register("add", new Timer(new HdrHistogramReservoir()));
+    public static Timer updateTimer = registry.register("update", new Timer(new HdrHistogramReservoir()));
+    public static Timer deleteTimer = registry.register("delete", new Timer(new HdrHistogramReservoir()));
+    public static Timer errorTimer = registry.register("error", new Timer(new HdrHistogramReservoir()));
 
 
     public static AtomicLong tracker = new AtomicLong(0);

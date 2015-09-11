@@ -14,6 +14,7 @@ import com.codahale.metrics.CsvReporter;
 import com.codahale.metrics.Snapshot;
 import com.codahale.metrics.Timer;
 import com.datastax.driver.core.*;
+import com.datastax.driver.core.policies.DowngradingConsistencyRetryPolicy;
 import com.github.tjake.mvbench.playlist.AbstractPlaylist;
 import io.airlift.airline.Command;
 import io.airlift.airline.HelpOption;
@@ -84,6 +85,7 @@ public class Bench
                 .withoutMetrics()
                 .withoutJMXReporting()
                 .withPoolingOptions(poolingOpts)
+                .withRetryPolicy(DowngradingConsistencyRetryPolicy.INSTANCE)
                 .build();
 
         Session session = cluster.connect(isManual ? "manual" : "mview");

@@ -41,10 +41,6 @@ public class ManualPlaylist extends AbstractPlaylist
         if (addplaylist == null)
         {
 
-            addplaylist = session.prepare("INSERT INTO user_playlists(user_name, playlist_name, song_id, added_time," +
-                    " artist_name, genre)VALUES(?,?,?,?,?,?)");
-
-
             addsong2user = session.prepare("INSERT INTO song_to_user(song_id, user_name, playlist_name," +
                     " added_time)VALUES(?,?,?,?)");
 
@@ -54,6 +50,9 @@ public class ManualPlaylist extends AbstractPlaylist
 
             addgenre2user = session.prepare("INSERT INTO genre_to_user(genre, user_name, playlist_name," +
                     " song_id)VALUES(?,?,?,?)");
+
+            addplaylist = session.prepare("INSERT INTO user_playlists(user_name, playlist_name, song_id, added_time," +
+                    " artist_name, genre)VALUES(?,?,?,?,?,?)");
         }
 
 
@@ -104,10 +103,6 @@ public class ManualPlaylist extends AbstractPlaylist
     {
         if (updatelastplayed == null)
         {
-            updatelastplayed = session.prepare("UPDATE user_playlists SET last_played = ? WHERE user_name = ? " +
-                    "AND playlist_name = ? AND song_id = ?");
-
-
             getlastplated = session.prepare("SELECT last_played from user_playlists where user_name = ? " +
                     "and playlist_name = ? and song_id = ?");
 
@@ -118,6 +113,9 @@ public class ManualPlaylist extends AbstractPlaylist
 
             addrecentlyplayed = session.prepare("INSERT INTO recently_played(last_played, user_name, playlist_name," +
                     " song_id)VALUES(?,?,?,?)");
+
+            updatelastplayed = session.prepare("UPDATE user_playlists SET last_played = ? WHERE user_name = ? " +
+                    "AND playlist_name = ? AND song_id = ?");
         }
 
 
@@ -208,13 +206,13 @@ public class ManualPlaylist extends AbstractPlaylist
 
             getplaylist = session.prepare("SELECT * from user_playlists where user_name = ? AND playlist_name = ?");
 
-            deleteplaylist = session.prepare("DELETE from user_playlists where user_name = ? AND playlist_name = ?");
-
             deletesong2user = session.prepare("DELETE FROM song_to_user where song_id = ? AND user_name = ? AND playlist_name = ?");
 
             deleteartist2user = session.prepare("DELETE FROM artist_to_user where artist_name = ? AND user_name = ? AND playlist_name = ? AND song_id = ?");
 
             deletegenre2user = session.prepare("DELETE FROM genre_to_user where genre = ? AND user_name = ? AND playlist_name = ? AND song_id = ?");
+
+            deleteplaylist = session.prepare("DELETE from user_playlists where user_name = ? AND playlist_name = ?");
         }
 
 

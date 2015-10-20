@@ -1,5 +1,5 @@
 //Manual Schema
-CREATE KEYSPACE manual WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1};
+CREATE KEYSPACE manual WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 3};
 
 CREATE TABLE manual.user_playlists
 (
@@ -55,7 +55,7 @@ CREATE TABLE manual.recently_played
 
 //////////////////////////////////////////////////////////////////
 //Materialized View Schema
-CREATE KEYSPACE mview WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1};
+CREATE KEYSPACE mview WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 3};
 
 CREATE TABLE mview.user_playlists
 (

@@ -1,7 +1,7 @@
 //Manual Schema
-CREATE KEYSPACE manual WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1};
+CREATE KEYSPACE IF NOT EXISTS manual WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1};
 
-CREATE TABLE manual.user_playlists
+CREATE TABLE IF NOT EXISTS manual.user_playlists
 (
     user_name           text,
     playlist_name       text,
@@ -13,7 +13,7 @@ CREATE TABLE manual.user_playlists
     PRIMARY KEY (user_name, playlist_name, song_id) 
 );
 
-CREATE TABLE manual.song_to_user
+CREATE TABLE IF NOT EXISTS manual.song_to_user
 (
     song_id             text,
     user_name           text,
@@ -23,7 +23,7 @@ CREATE TABLE manual.song_to_user
 );
 
 
-CREATE TABLE manual.artist_to_user
+CREATE TABLE IF NOT EXISTS manual.artist_to_user
 (
     artist_name         text,
     user_name           text,
@@ -32,7 +32,7 @@ CREATE TABLE manual.artist_to_user
     PRIMARY KEY(artist_name, user_name, playlist_name, song_id)
 );
 
-CREATE TABLE manual.genre_to_user
+CREATE TABLE IF NOT EXISTS manual.genre_to_user
 (
     genre               text,
     user_name           text,
@@ -41,7 +41,7 @@ CREATE TABLE manual.genre_to_user
     PRIMARY KEY(genre, user_name, playlist_name, song_id)
 );
 
-CREATE TABLE manual.recently_played
+CREATE TABLE IF NOT EXISTS manual.recently_played
 (
     last_played         bigint,
     user_name           text,
@@ -55,9 +55,9 @@ CREATE TABLE manual.recently_played
 
 //////////////////////////////////////////////////////////////////
 //Materialized View Schema
-CREATE KEYSPACE mview WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1};
+CREATE KEYSPACE IF NOT EXISTS mview WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1};
 
-CREATE TABLE mview.user_playlists
+CREATE TABLE IF NOT EXISTS mview.user_playlists
 (
     user_name  text,
     playlist_name  text,
@@ -69,7 +69,7 @@ CREATE TABLE mview.user_playlists
     PRIMARY KEY (user_name, playlist_name, song_id)
 );
 
-CREATE MATERIALIZED VIEW mview.song_to_user AS
+CREATE MATERIALIZED VIEW IF NOT EXISTS mview.song_to_user AS
       SELECT song_id, user_name, added_time
       FROM user_playlists
       WHERE song_id IS NOT NULL
@@ -77,7 +77,7 @@ CREATE MATERIALIZED VIEW mview.song_to_user AS
       AND user_name IS NOT NULL
       PRIMARY KEY(song_id, user_name, playlist_name);
 
-CREATE MATERIALIZED VIEW mview.artist_to_user AS
+CREATE MATERIALIZED VIEW IF NOT EXISTS mview.artist_to_user AS
       SELECT song_id, user_name
       FROM user_playlists
       WHERE song_id IS NOT NULL
@@ -87,7 +87,7 @@ CREATE MATERIALIZED VIEW mview.artist_to_user AS
       PRIMARY KEY(artist_name, user_name, playlist_name, song_id);
 
 
-CREATE MATERIALIZED VIEW mview.genre_to_user AS
+CREATE MATERIALIZED VIEW IF NOT EXISTS mview.genre_to_user AS
       SELECT song_id, user_name
       FROM user_playlists
       WHERE song_id IS NOT NULL
@@ -97,7 +97,7 @@ CREATE MATERIALIZED VIEW mview.genre_to_user AS
       PRIMARY KEY(genre, user_name, playlist_name, song_id);
 
 
-CREATE MATERIALIZED VIEW mview.recently_played AS
+CREATE MATERIALIZED VIEW IF NOT EXISTS mview.recently_played AS
       SELECT song_id, user_name
       FROM user_playlists
       WHERE song_id IS NOT NULL

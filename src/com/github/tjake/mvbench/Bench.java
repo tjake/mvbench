@@ -1,7 +1,9 @@
 package com.github.tjake.mvbench;
 
 import java.io.File;
-import java.util.Map;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
@@ -11,9 +13,10 @@ import com.google.common.util.concurrent.Uninterruptibles;
 
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.CsvReporter;
-import com.codahale.metrics.Snapshot;
-import com.codahale.metrics.Timer;
-import com.datastax.driver.core.*;
+import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.HostDistance;
+import com.datastax.driver.core.PoolingOptions;
+import com.datastax.driver.core.Session;
 import com.datastax.driver.core.policies.DowngradingConsistencyRetryPolicy;
 import com.github.tjake.mvbench.playlist.AbstractPlaylist;
 import io.airlift.airline.Command;
@@ -152,6 +155,21 @@ public class Bench
         catch (Throwable t)
         {
             t.printStackTrace();
+        }
+
+        csv.stop();
+        reporter.stop();
+
+        System.out.println("===TOTAL REPORT===");
+
+        try
+        {
+            for (String line : Files.readAllLines(new File(output, "total.csv").toPath(), Charset.defaultCharset()))
+                System.out.println(line);
+
+        } catch (IOException e)
+        {
+            e.printStackTrace();
         }
     }
 }

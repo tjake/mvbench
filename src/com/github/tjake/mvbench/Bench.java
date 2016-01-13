@@ -135,6 +135,7 @@ public class Bench
         final ConsoleReporter reporter = ConsoleReporter.forRegistry(AbstractPlaylist.registry)
                 .convertRatesTo(TimeUnit.SECONDS)
                 .convertDurationsTo(TimeUnit.MILLISECONDS)
+                .outputTo(System.out)
                 .build();
 
         File output = new File("./reports" + (bench.isManual ? "/manual" : "/view"));
@@ -167,6 +168,7 @@ public class Bench
             for (String line : Files.readAllLines(new File(output, "total.csv").toPath(), Charset.defaultCharset()))
                 System.out.println(line);
 
+            System.out.flush();
         } catch (IOException e)
         {
             e.printStackTrace();

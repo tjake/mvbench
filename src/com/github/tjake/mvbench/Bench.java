@@ -118,8 +118,6 @@ public class Bench
         }
 
         cluster.close();
-
-        System.exit(0);
     }
 
     public static void main(String[] args)
@@ -156,6 +154,7 @@ public class Bench
         catch (Throwable t)
         {
             t.printStackTrace();
+            System.exit(-1);
         }
 
         csv.stop();
@@ -173,5 +172,7 @@ public class Bench
         {
             e.printStackTrace();
         }
+
+        System.exit(0);
     }
 }

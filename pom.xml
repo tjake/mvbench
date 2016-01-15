@@ -124,8 +124,6 @@
           <source>1.6</source>
           <target>1.6</target>
 	  <compilerVersion>1.8</compilerVersion>
-	  <!--Why does this happen?-->
-	  <executable>/usr/lib/jvm/java-8-oracle/bin/javac</executable>
         </configuration>
       </plugin>
       <plugin>
@@ -164,7 +162,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
-          <jvm>/usr/lib/jvm/java-8-oracle/bin/java</jvm>
           <forkMode>once</forkMode>
         </configuration>
       </plugin>

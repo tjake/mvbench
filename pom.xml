@@ -113,6 +113,11 @@
           <artifactId>maven-surefire-plugin</artifactId>
           <version>2.8</version>
         </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-shade-plugin</artifactId>
+          <version>2.4.3</version>
+        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
@@ -164,6 +169,30 @@
         <configuration>
           <forkMode>once</forkMode>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>2.4.3</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <transformers>
+                <transformer
+                  implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <manifestEntries>
+                    <Main-Class>com.github.tjake.mvbench.Bench</Main-Class>
+                  </manifestEntries>
+                </transformer>
+              </transformers>
+              <finalName>${project.artifactId}-${project.version}-jar-with-dependencies</finalName>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
